@@ -1,8 +1,8 @@
 package io.github.devmarlon2006.SystemLog.system;
 
-import io.github.devmarlon2006.SystemLog.LogHandle;
+import io.github.devmarlon2006.SystemLog.log.LogHandle;
 import io.github.devmarlon2006.SystemLog.log.Steps;
-import io.github.devmarlon2006.SystemLog.log.SystemLog;
+import io.github.devmarlon2006.SystemLog.log.models.SystemLog;
 
 public interface Logablee {
 
@@ -22,17 +22,16 @@ public interface Logablee {
     void catchLogInfo();
 
 
-    default  SystemLog logInfo() {
-        SystemLog createdLogInfo = LogHandle.of().configure((logParams) -> logParams
+    default  LogHandle logInfo(String message) {
+        return LogHandle.of().configure((logParams) -> logParams
                 .addId()
                 .statusCode(200)
-                .addMessage("")
+                .addMessage(message)
                 .addSteps(null)
-        ).build();
-        return createdLogInfo;
+        );
     }
 
-    default SystemLog logError() {
+    default SystemLog logError(String message) {
         SystemLog cretedLogError = new LogHandle().configure( (logParams) -> logParams ).build();
         return null;
     }
@@ -41,13 +40,5 @@ public interface Logablee {
         Steps systemSteps = Steps.of().configure(conf -> conf.trace("nada"));
         return null;
     }
-
-    /**
-     * Metodos para os passos do log
-     */
-
-    String provinderOperaationType();
-
-    String provinderTrace();
 
 }

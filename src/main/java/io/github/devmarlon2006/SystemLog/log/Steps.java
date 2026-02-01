@@ -6,24 +6,31 @@ import java.util.function.UnaryOperator;
 
 public class Steps {
     private String operationType;
+    private String MESSAGE;
     private Timestamp OPERATION_TIME;
     private String stacTrace;
 
     public static Steps of() {
-        return new Steps();
+        return new Steps().timestamp();
     }
 
     public Steps configure(UnaryOperator<Steps> config) {
         return config.apply(this);
     }
 
-    public void timestamp() {
+    public Steps timestamp() {
         this.OPERATION_TIME = Timestamp.from(Instant.now());
+        return (this);
+    }
+
+    public Steps message(String message) {
+        this.MESSAGE = message;
+        return (this);
     }
 
     public Steps trace(String trace) {
         this.stacTrace = trace;
-        return this;
+        return (this);
     }
 
     public Steps operation(String operation) {

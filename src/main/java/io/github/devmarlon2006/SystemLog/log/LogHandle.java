@@ -1,8 +1,9 @@
-package io.github.devmarlon2006.SystemLog;
+package io.github.devmarlon2006.SystemLog.log;
 
-import io.github.devmarlon2006.SystemLog.log.SystemLog;
-import io.github.devmarlon2006.SystemLog.log.Steps;
+import io.github.devmarlon2006.SystemLog.log.models.SystemLog;
+import io.github.devmarlon2006.SystemLog.system.exeptions.StepNotAvaliable;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.function.UnaryOperator;
 
@@ -11,8 +12,8 @@ public class LogHandle {
 
     private UUID LOG_ID;
     private int STATUS_CODE;
-    private String[] MESSAGE;
-    private Steps LOG_STEPS;
+    private String MESSAGE;
+    private List<Steps> LOG_STEPS;
 
     public LogHandle () {
     }
@@ -21,7 +22,7 @@ public class LogHandle {
         return new LogHandle();
     }
 
-    public LogHandle(UUID logId, String[] message, Steps steps) {
+    public LogHandle(UUID logId, String message, List<Steps> steps) {
         LOG_ID = logId;
         this.MESSAGE = message;
         this.LOG_STEPS = steps;
@@ -53,13 +54,13 @@ public class LogHandle {
         return (this);
     }
 
-    public LogHandle addMessage(String... messageArgs) {
+    public LogHandle addMessage(String messageArgs) {
         this.MESSAGE = messageArgs;
         return (this);
     }
 
     public LogHandle addSteps(Steps addSteps){
-        this.LOG_STEPS = addSteps;
+        this.LOG_STEPS.add(addSteps);
         return (this);
     }
 
@@ -71,16 +72,23 @@ public class LogHandle {
         return this.LOG_ID;
     }
 
-    public String getOneMessage(int index) {
-        return this.MESSAGE[index];
-    }
-
-    public String[] getAllMessages () {
+    public String getMessage() {
         return this.MESSAGE;
     }
 
-    public Steps getSteps() {
+    public List<Steps> obtainLogSteps() {
         return this.LOG_STEPS;
     }
 
+    public Steps getIndividualStep(int index) throws StepNotAvaliable {
+        if (index > this.LOG_STEPS.size()) {
+            throw new StepNotAvaliable("Step not avaliable: " + index);
+
+        }
+        return this.LOG_STEPS.get(index);
+    }
+
+    public int getStatusCode() {
+        return this.STATUS_CODE;
+    }
 }
