@@ -29,6 +29,10 @@ public class StepsHandle extends Handle implements Buildable<Steps , StepsHandle
         return new StepsHandle().timestamp();
     }
 
+    /**
+     * seters
+     */
+
     public StepsHandle timestamp() {
         this.OPERATION_TIME = Timestamp.from(Instant.now());
         return (this);
@@ -47,5 +51,29 @@ public class StepsHandle extends Handle implements Buildable<Steps , StepsHandle
     public StepsHandle operation(String operation) {
         this.operationType = operation;
         return (this);
+    }
+
+    /**
+     * getters
+     */
+
+    public String getMessage() {
+        return MESSAGE;
+    }
+
+    public Timestamp getOperationTime() {
+        return OPERATION_TIME;
+    }
+
+    public String getOperationType() {
+        return operationType;
+    }
+
+    public String getStackTrace() {
+        return stacTrace;
+    }
+
+    public Exception getCasualException() {
+        return this.casualExeption;
     }
 }
