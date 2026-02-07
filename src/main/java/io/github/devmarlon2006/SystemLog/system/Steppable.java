@@ -1,6 +1,6 @@
 package io.github.devmarlon2006.SystemLog.system;
 
-import io.github.devmarlon2006.SystemLog.log.Steps;
+import io.github.devmarlon2006.SystemLog.log.models.Steps;
 
 public interface Steppable {
 
@@ -10,10 +10,6 @@ public interface Steppable {
 
 
     default Steps getSteps(String message) {
-        return Steps.of().configure( (config) -> config
-                .operation(this.provinderOperationType())
-                .trace(message)
-        );
+        return null;
     }
-
 }

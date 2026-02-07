@@ -1,7 +1,6 @@
 package io.github.devmarlon2006.SystemLog.system;
 
 import io.github.devmarlon2006.SystemLog.log.LogHandle;
-import io.github.devmarlon2006.SystemLog.log.Steps;
 import io.github.devmarlon2006.SystemLog.log.models.SystemLog;
 
 public interface Logablee {
@@ -31,14 +30,8 @@ public interface Logablee {
         );
     }
 
-    default SystemLog logError(String message) {
+    default LogHandle logError(String message) {
         SystemLog cretedLogError = new LogHandle().configure( (logParams) -> logParams ).build();
         return null;
     }
-
-    default Steps createSteps() {
-        Steps systemSteps = Steps.of().configure(conf -> conf.trace("nada"));
-        return null;
-    }
-
 }

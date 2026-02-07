@@ -1,7 +1,6 @@
 package io.github.devmarlon2006.SystemLog.log.models;
 
 import io.github.devmarlon2006.SystemLog.log.LogHandle;
-import io.github.devmarlon2006.SystemLog.log.Steps;
 
 import java.util.List;
 import java.util.UUID;
