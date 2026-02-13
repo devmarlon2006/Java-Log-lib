@@ -1,4 +1,6 @@
-package io.github.devmarlon2006.SystemLog.log;
+package io.github.devmarlon2006.SystemLog.system;
+
+import io.github.devmarlon2006.SystemLog.log.Handle;
 
 import java.util.function.UnaryOperator;
 
@@ -9,8 +11,8 @@ public interface Buildable<P , H extends Handle> {
      * @param"H" -> Handle a ser configurada
      */
 
-    abstract P build();
+    P build();
 
-    abstract H configure(UnaryOperator<H> configuration);
+    H configure(UnaryOperator<H> configuration);
 
 }
