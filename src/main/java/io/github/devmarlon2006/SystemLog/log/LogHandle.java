@@ -2,27 +2,24 @@ package io.github.devmarlon2006.SystemLog.log;
 
 import io.github.devmarlon2006.SystemLog.log.models.Steps;
 import io.github.devmarlon2006.SystemLog.log.models.SystemLog;
+import io.github.devmarlon2006.SystemLog.system.Buildable;
 import io.github.devmarlon2006.SystemLog.system.exeptions.StepNotAvaliable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-
 
 public class LogHandle extends Handle implements Buildable<SystemLog , LogHandle> {
 
     private UUID LOG_ID;
     private int SUPER_STATUS_CODE;
     private String MESSAGE;
-    private List<Steps> LOG_STEPS;
+    private List<Steps> LOG_STEPS = new ArrayList<>();
+    private List<StepsHandle> stepsHandlesBuffer = new ArrayList<>();
 
     public LogHandle () {
-    }
-
-    public static LogHandle of() {
-        return new LogHandle();
     }
 
     public LogHandle(UUID logId, String message, List<Steps> steps) {
@@ -31,23 +28,23 @@ public class LogHandle extends Handle implements Buildable<SystemLog , LogHandle
         this.LOG_STEPS = steps;
     }
 
+    public static LogHandle of() {
+        return new LogHandle();
+    }
+
 
     /**
-     * Builder
+     * Implementation of Buildable
      */
 
     @Override
     public SystemLog build() {
-        return new SystemLog(this);
+        return SystemLog.of(this);
     }
 
     @Override
     public LogHandle configure(UnaryOperator<LogHandle> config ) {
         return config.apply(this);
-    }
-
-    private LogHandle backThis () {
-        return (this);
     }
 
     /**
@@ -71,15 +68,13 @@ public class LogHandle extends Handle implements Buildable<SystemLog , LogHandle
         return (this);
     }
 
-    public LogHandle addSteps(Steps addSteps){
-        this.LOG_STEPS.add(addSteps);
+    public LogHandle addSteps(StepsHandle addSteps){
+        this.stepsHandlesBuffer.add(addSteps);
         return (this);
     }
 
     public LogHandle addTrace() {
-        if(this.isSuccess()) {
-        }
-        return backThis();
+        return (this);
     }
 
     /**
@@ -94,9 +89,9 @@ public class LogHandle extends Handle implements Buildable<SystemLog , LogHandle
         return this.MESSAGE;
     }
 
-    public List<Steps> obtainLogSteps() {
-        if (this.LOG_STEPS == null) {
-            this.LOG_STEPS = new ArrayList<>();
+    public List<Steps> obtainLogSteps() throws NullPointerException {
+        if (this.LOG_STEPS.isEmpty()) {
+            throw new NullPointerException("Steps not avaliable");
         }
         return this.LOG_STEPS;
     }
@@ -107,20 +102,40 @@ public class LogHandle extends Handle implements Buildable<SystemLog , LogHandle
         return this.SUPER_STATUS_CODE;
     }
 
-    public Steps getIndividualStep(int index) throws StepNotAvaliable {
-        if (index > this.LOG_STEPS.size()) {
-            throw new StepNotAvaliable("This step is not avaliable -> " + index);
+    public LogHandle buildSteps() {
+        if (this.stepsHandlesBuffer != null) {
+            for (StepsHandle step : this.stepsHandlesBuffer) {
+                assert false;
+                this.LOG_STEPS.add(step.build());
+            }
         }
-        return this.LOG_STEPS.get(index);
+        return this;
     }
 
-    public List<Steps> filterSteps() {
-        this.LOG_STEPS.removeIf(Objects::isNull);
-        return null;
+    public List<StepsHandle> filterStepsAndSet(String filter , StepsHandle.Camps camp) {
+        Predicate<StepsHandle> condition = (step) -> step.getCamps(camp).contains(filter);
+        this.stepsHandlesBuffer = this.stepsHandlesBuffer.stream().filter(condition).toList();
+        return this.stepsHandlesBuffer;
+    }
+
+    public List<StepsHandle> filterStepsAndGet(String filter , StepsHandle.Camps camp) {
+        Predicate<StepsHandle> condition = (step) -> step.getCamps(camp).contains(filter);
+        return this.stepsHandlesBuffer.stream().filter(condition).toList();
+    }
+
+    public StepsHandle getIndividualStep(int index) throws StepNotAvaliable {
+        if (index > this.stepsHandlesBuffer.size()) {
+            throw new StepNotAvaliable("This step is not avaliable -> " + index);
+        }
+        return this.stepsHandlesBuffer.get(index);
     }
 
     public boolean hasSteps() {
         return !this.LOG_STEPS.isEmpty();
+    }
+
+    public boolean hasStepsBuffer() {
+        return !this.stepsHandlesBuffer.isEmpty();
     }
 
     public boolean isError() {
