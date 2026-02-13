@@ -6,6 +6,5 @@ public class Main {
     }
 
     private void teste() {
-
     }
 }
