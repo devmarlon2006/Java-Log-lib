@@ -14,11 +14,15 @@ public class Steps {
 
     private Exception casualExeption;
 
-    public Steps(StepsHandle handle) {
+    private Steps(StepsHandle handle) {
         this.operationType = handle.getOperationType();
         this.MESSAGE = handle.getMessage();
         this.OPERATION_TIME = handle.getOperationTime();
         this.stacTrace = handle.getStackTrace();
+    }
+
+    public static Steps of(StepsHandle handle) {
+        return new Steps(handle);
     }
 
 }
