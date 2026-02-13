@@ -1,6 +1,7 @@
 package io.github.devmarlon2006.SystemLog.log;
 
 import io.github.devmarlon2006.SystemLog.log.models.Steps;
+import io.github.devmarlon2006.SystemLog.system.Buildable;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -15,7 +16,7 @@ public class StepsHandle extends Handle implements Buildable<Steps , StepsHandle
 
     @Override
     public Steps build() {
-        return null;
+        return Steps.of(this);
     }
 
     @Override
@@ -43,8 +44,8 @@ public class StepsHandle extends Handle implements Buildable<Steps , StepsHandle
         return (this);
     }
 
-    public StepsHandle trace() {
-        this.stacTrace = casualExeption.getMessage();
+    public StepsHandle trace(String trace) {
+        this.stacTrace = trace;
         return (this);
     }
 
@@ -76,4 +77,20 @@ public class StepsHandle extends Handle implements Buildable<Steps , StepsHandle
     public Exception getCasualException() {
         return this.casualExeption;
     }
+
+    public String getCamps(Camps camp ) {
+        return switch (camp) {
+            case MESSAGE -> getMessage();
+            case OPERATION_TIME -> getOperationTime().toString();
+            case OPERATION_TYPE -> getOperationType();
+            case STACK_TRACE -> getStackTrace();
+        };
+
+
+    }
+
+    public enum Camps {
+        MESSAGE, OPERATION_TIME, OPERATION_TYPE, STACK_TRACE
+    }
+
 }
