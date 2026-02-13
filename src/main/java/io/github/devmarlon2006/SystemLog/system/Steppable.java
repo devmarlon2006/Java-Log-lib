@@ -1,15 +1,19 @@
 package io.github.devmarlon2006.SystemLog.system;
 
-import io.github.devmarlon2006.SystemLog.log.models.Steps;
+import io.github.devmarlon2006.SystemLog.log.StepsHandle;
 
 public interface Steppable {
 
-    Steps createSteps(String message);
+    StepsHandle generateStep(String message , String trace);
 
     String provinderOperationType();
 
 
-    default Steps getSteps(String message) {
-        return null;
+    default StepsHandle getSteps(String message , String trace) {
+        return StepsHandle.of().configure( (S) -> S
+                        .operation(provinderOperationType())
+                        .message(message)
+                        .trace(trace)
+                );
     }
 }
