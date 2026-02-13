@@ -7,12 +7,18 @@ import java.util.UUID;
 
 public class SystemLog {
     private final UUID LOG_ID;
+    private final int statusCode;
     private final String message;
     private final List<Steps> steps;
 
-    public SystemLog(LogHandle ingectedLog) {
-        this.LOG_ID = ingectedLog.getLogId();
-        this.message = ingectedLog.getMessage();
-        this.steps = ingectedLog.obtainLogSteps();
+    private SystemLog(LogHandle handle) {
+        this.LOG_ID = handle.getLogId();
+        this.statusCode = handle.getStatusCode();
+        this.message = handle.getMessage();
+        this.steps = handle.obtainLogSteps();
+    }
+
+    public static SystemLog of(LogHandle ingectedLog) {
+        return new SystemLog(ingectedLog);
     }
 }
