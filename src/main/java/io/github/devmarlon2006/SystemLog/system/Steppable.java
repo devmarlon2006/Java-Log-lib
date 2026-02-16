@@ -4,7 +4,7 @@ import io.github.devmarlon2006.SystemLog.log.StepsHandle;
 
 public interface Steppable {
 
-    StepsHandle generateStep(String message , String trace);
+    StepsHandle warn(String message , String trace);
 
     String provinderOperationType();
 
