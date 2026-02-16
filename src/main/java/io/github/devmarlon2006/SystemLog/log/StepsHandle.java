@@ -16,15 +16,13 @@ public class StepsHandle extends Handle implements Buildable<Steps , StepsHandle
 
     @Override
     public Steps build() {
-        return Steps.of(this);
+        return Steps.from(this);
     }
 
     @Override
     public StepsHandle configure(UnaryOperator<StepsHandle> configuration) {
         return configuration.apply(this);
     }
-
-    private Exception casualExeption;
 
     public static StepsHandle of() {
         return new StepsHandle().timestamp();
@@ -74,9 +72,6 @@ public class StepsHandle extends Handle implements Buildable<Steps , StepsHandle
         return stacTrace;
     }
 
-    public Exception getCasualException() {
-        return this.casualExeption;
-    }
 
     public String getCamps(Camps camp ) {
         return switch (camp) {
