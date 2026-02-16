@@ -15,10 +15,10 @@ public class SystemLog {
         this.LOG_ID = handle.getLogId();
         this.statusCode = handle.getStatusCode();
         this.message = handle.getMessage();
-        this.steps = handle.obtainLogSteps();
+        this.steps = handle.obtainLogSteps().orElseThrow();
     }
 
-    public static SystemLog of(LogHandle ingectedLog) {
+    public static SystemLog from(LogHandle ingectedLog) {
         return new SystemLog(ingectedLog);
     }
 }

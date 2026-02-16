@@ -21,7 +21,7 @@ public class Steps {
         this.stacTrace = handle.getStackTrace();
     }
 
-    public static Steps of(StepsHandle handle) {
+    public static Steps from(StepsHandle handle) {
         return new Steps(handle);
     }
 
